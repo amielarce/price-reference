@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Header from "./components/Header";
-import SearchBar from "./components/SearchBar";
+import PriceReference from "./components/PriceReference";
 
 export class App extends Component {
   render() {
@@ -16,7 +16,7 @@ export class App extends Component {
               path="/"
               render={(props) => (
                 <React.Fragment>
-                  <SearchBar />
+                  <PriceReference />
                 </React.Fragment>
               )}
             />
@@ -27,4 +27,4 @@ export class App extends Component {
   }
 }
 
-export default App;
+export default App; 
