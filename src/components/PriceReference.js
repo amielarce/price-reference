@@ -1,16 +1,29 @@
 import React, { Component } from "react";
 import SearchBar from "./SearchBar";
 import ItemList from "./ItemList";
+import Papa from "papaparse";
 
 export class PriceReference extends Component {
   constructor(props) {
     super(props);
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
-    this.state = { searchText: "", categories: [] };
+    this.state = { searchText: "", products: [], categories: [] };
   }
 
   componentDidMount() {
-    this.setState({ categories: this.getUniqueCategories(PRODUCT) });
+    Papa.parse(
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFvcgfAORNuC6zivcdvnJJezWQkziCezMPRtzkFBKjZ6d2MtukYH6hOOdAffWDeFVm4mkh8m2K4naF/pub?gid=0&single=true&output=csv",
+      {
+        download: true,
+        header: true,
+        complete: (results) => {
+          this.setState({
+            products: results.data,
+            categories: this.getUniqueCategories(results.data)
+          });
+        },
+      }
+    );
   }
 
   onSearchTextChange(searchText) {
@@ -28,6 +41,7 @@ export class PriceReference extends Component {
   }
 
   render() {
+    
     return (
       <div>
         <SearchBar
@@ -36,7 +50,7 @@ export class PriceReference extends Component {
         />
         <ItemList
           searchItem={this.state.searchText}
-          products={PRODUCT}
+          products={this.state.products}
           categories={this.state.categories}
         />
       </div>
