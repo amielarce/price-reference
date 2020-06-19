@@ -19,6 +19,7 @@ export class PriceReference extends Component {
 
   getUniqueCategories(product) {
     const categorySet = new Set();
+    categorySet.add("All"); // Initial category
     product.forEach((product) => {
       categorySet.add(product.category);
     });
