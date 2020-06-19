@@ -13,15 +13,19 @@ export class Item extends Component {
 
 const blockContainer = {
   width: "100%",
-  textAlign: "left",
+  borderBottom: "1px solid gray",
+  padding: "10px",  
 };
 const nameStyle = {
-  display: "inline",
+  display: "inline-block",
   width: "70%",
+  textAlign: "left",
 };
 
 const priceStyle = {
-  display: "inline",
+  display: "inline-block",
+  borderRight: "5px",
+  textAlign: "right",
 };
 
 export default Item;

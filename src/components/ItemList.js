@@ -46,13 +46,18 @@ export class ItemList extends Component {
 
     return (
       <Tabs selectedIndex={this.state.selectedTab} onSelect={this.onSelectTab}>
-        <TabList>{categoryList}</TabList>
+        <TabList style={scrollMenu}>{categoryList}</TabList>
         {products.map((product, index) => (
           <TabPanel key={index}>{product}</TabPanel>
         ))}
       </Tabs>
     );
   }
+}
+
+const scrollMenu = {
+  overflow: "auto",
+  whiteSpace: "nowrap"
 }
 
 export default ItemList;
