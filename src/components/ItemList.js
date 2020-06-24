@@ -48,7 +48,7 @@ export class ItemList extends Component {
       <Tabs selectedIndex={this.state.selectedTab} onSelect={this.onSelectTab}>
         <TabList style={scrollMenu}>{categoryList}</TabList>
         {products.map((product, index) => (
-          <TabPanel key={index}>{product}</TabPanel>
+          <TabPanel style={tabBody} key={index}>{product}</TabPanel>
         ))}
       </Tabs>
     );
@@ -58,6 +58,10 @@ export class ItemList extends Component {
 const scrollMenu = {
   overflow: "auto",
   whiteSpace: "nowrap"
+}
+
+const tabBody = {
+  margin: "5px"
 }
 
 export default ItemList;

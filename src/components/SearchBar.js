@@ -16,7 +16,7 @@ export class SearchBar extends Component {
         <input
           type="text"
           value={searchText}
-          style={{ flex: "10", padding: "5px", width: "100%" }}
+          style={{ flex: "10", margin: "5px", width: "100%" }}
           placeholder="Search..."
           onChange = {this.handleChange}
         />
