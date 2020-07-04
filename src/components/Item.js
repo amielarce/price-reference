@@ -12,7 +12,7 @@ export class Item extends Component {
 }
 
 const blockContainer = {
-  width: "100%",
+  width: "95%",
   borderBottom: "1px solid gray",
   padding: "10px",  
 };
@@ -24,7 +24,7 @@ const nameStyle = {
 
 const priceStyle = {
   display: "inline-block",
-  borderRight: "5px",
+  marginLeft: "15px",
   textAlign: "right",
 };
 

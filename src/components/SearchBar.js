@@ -13,13 +13,15 @@ export class SearchBar extends Component {
   render() {
     const searchText = this.props.searchText;
     return (
+      <div style={{width:"100%"}}>
         <input
           type="text"
           value={searchText}
-          style={{ flex: "10", margin: "5px", width: "100%" }}
+          style={{width: "98%", padding: "5px 1px", margin: "1px 0px"}}
           placeholder="Search..."
           onChange = {this.handleChange}
         />
+      </div>
     );
   }
 }
