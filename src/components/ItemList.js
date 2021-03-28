@@ -37,7 +37,6 @@ export class ItemList extends Component {
       }
 
       products.push(<div>{categoryItems}</div>);
-      console.log(products);
     });
 
     const categoryList = this.props.categories.map((category) => (
