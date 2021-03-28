@@ -3,19 +3,37 @@ import SearchBar from "./SearchBar";
 import ItemList from "./ItemList";
 import Papa from "papaparse";
 import Data from "../data.json";
+import {projectFirestore} from "../firebase/config"
 
 export class PriceReference extends Component {
   constructor(props) {
     super(props);
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
-    this.state = { searchText: "", products: [], categories: [] };
+    this.state = { searchText: "", products: [], categories: [], unsub: null };
   }
 
   componentDidMount() {
-    this.setState({
-      products: Data,
-      categories: this.getUniqueCategories(Data)
-    })
+    // Get data from firestore snapshot
+    var data = [];
+    const unsubscribe = projectFirestore.collection('products')
+    .onSnapshot((snap) => {
+      // Clear data array
+      data = [];
+      // Obtain data from database
+      snap.forEach(doc => {
+        data.push({...doc.data(), id: doc.id});
+      });
+      // Update state values
+      this.setState({
+        products: data,
+        categories: this.getUniqueCategories(data),
+        unsub: unsubscribe
+      });
+    });
+    // this.setState({
+    //   products: Data,
+    //   categories: this.getUniqueCategories(Data)
+    // })
     // console.log(Data);
     // Papa.parse(
     //   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFvcgfAORNuC6zivcdvnJJezWQkziCezMPRtzkFBKjZ6d2MtukYH6hOOdAffWDeFVm4mkh8m2K4naF/pub?gid=0&single=true&output=csv",
@@ -30,6 +48,10 @@ export class PriceReference extends Component {
     //     },
     //   }
     // );
+  }
+
+  componentWillUnmount() {
+    this.state.unsub();
   }
 
   onSearchTextChange(searchText) {
