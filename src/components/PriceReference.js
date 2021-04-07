@@ -1,9 +1,12 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import { Fab } from "react-tiny-fab";
-import 'react-tiny-fab/dist/styles.css';
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import "react-tiny-fab/dist/styles.css";
 import { projectFirestore } from "../firebase/config";
 import SearchBar from "./SearchBar";
 import ItemList from "./ItemList";
+import AddForm from "./AddForm";
 
 export class PriceReference extends Component {
   constructor(props) {
@@ -61,7 +64,7 @@ export class PriceReference extends Component {
   }
 
   onAddItem() {
-    console.log('Add button pressed.');
+    console.log("Add button pressed.");
   }
 
   getUniqueCategories(product) {
@@ -86,14 +89,27 @@ export class PriceReference extends Component {
           products={this.state.products}
           categories={this.state.categories}
         />
-        <Fab mainButtonStyles={fabStyle} icon={<div>+</div>} onClick={this.onAddItem} event='click' />
+        <Popup
+          trigger={
+            <Fab
+              mainButtonStyles={fabStyle}
+              icon={<div>+</div>}
+              //onClick={this.onAddItem}
+              event="click"
+            />
+          }
+          position="center center"
+          modal
+        >
+          <AddForm />
+        </Popup>
       </div>
     );
   }
 }
 
 const fabStyle = {
-  backgroundColor: 'red'
-}
+  backgroundColor: "red",
+};
 
 export default PriceReference;
