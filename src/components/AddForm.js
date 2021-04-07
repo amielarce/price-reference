@@ -1,5 +1,5 @@
-import { render } from "@testing-library/react";
-import React, { Component } from "react";
+import React from "react";
+import { projectFirestore } from "../firebase/config";
 
 class AddForm extends React.Component {
   constructor(props) {
@@ -9,6 +9,42 @@ class AddForm extends React.Component {
       category: "",
       price: "",
     };
+
+    // Bind functions
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handlePriceChange = this.handlePriceChange.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleNameChange(event) {
+    this.setState({ name: event.target.value });
+  }
+
+  handleCategoryChange(event) {
+    this.setState({ category: event.target.value });
+  }
+
+  handlePriceChange(event) {
+    this.setState({ price: event.target.value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    // Add data to the firestore database
+    projectFirestore.collection("products").add({
+      name: this.state.name,
+      category: this.state.category,
+      price: this.state.price,
+    });
+
+    this.props.onModalClose();
+  }
+
+  handleCancelClick(event) {
+    this.props.onModalClose();
   }
 
   render() {
@@ -48,7 +84,7 @@ class AddForm extends React.Component {
           </div>
           <div>
             <input type="submit" value="Add" />
-            <button>Cancel</button>
+            <button onClick={this.handleCancelClick}>Cancel</button>
           </div>
         </form>
       </div>

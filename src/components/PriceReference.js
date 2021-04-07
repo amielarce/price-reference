@@ -13,7 +13,14 @@ export class PriceReference extends Component {
     super(props);
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
     this.onAddItem = this.onAddItem.bind(this);
-    this.state = { searchText: "", products: [], categories: [], unsub: null };
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      searchText: "",
+      products: [],
+      categories: [],
+      unsub: null,
+      isModalOpen: false,
+    };
   }
 
   componentDidMount() {
@@ -64,7 +71,11 @@ export class PriceReference extends Component {
   }
 
   onAddItem() {
-    console.log("Add button pressed.");
+    this.setState({ isModalOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ isModalOpen: false });
   }
 
   getUniqueCategories(product) {
@@ -89,19 +100,20 @@ export class PriceReference extends Component {
           products={this.state.products}
           categories={this.state.categories}
         />
+        <Fab
+          mainButtonStyles={fabStyle}
+          icon={<div>+</div>}
+          onClick={this.onAddItem}
+          event="click"
+        />
         <Popup
-          trigger={
-            <Fab
-              mainButtonStyles={fabStyle}
-              icon={<div>+</div>}
-              //onClick={this.onAddItem}
-              event="click"
-            />
-          }
+          open={this.state.isModalOpen}
           position="center center"
           modal
+          closeOnDocumentClick
+          onClose={this.closeModal}
         >
-          <AddForm />
+          <AddForm onModalClose={this.closeModal} />
         </Popup>
       </div>
     );
@@ -109,7 +121,7 @@ export class PriceReference extends Component {
 }
 
 const fabStyle = {
-  backgroundColor: "red",
+  backgroundColor: "tomato",
 };
 
 export default PriceReference;
