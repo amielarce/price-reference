@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Item from "./Item";
+import ItemAction from "./ItemAction";
+
 import "react-tabs/style/react-tabs.css";
+import "swiper/swiper-bundle.min.css";
 
 export class ItemList extends Component {
   constructor(props) {
     super(props);
     this.onSelectTab = this.onSelectTab.bind(this);
-    this.state = {selectedTab: 0};
+    this.state = { selectedTab: 0 };
   }
 
   onSelectTab(index, lastIndex) {
-    this.setState({selectedTab: index});
+    this.setState({ selectedTab: index });
   }
 
   render() {
@@ -27,7 +31,18 @@ export class ItemList extends Component {
           category === "All" ? product.category : category;
         if (updatedCategory === product.category && index > -1) {
           categoryItems.push(
-            <Item key={product.id} name={product.name} price={product.price} />
+            <Swiper initialSlide={1} onSwiper={(swiper) => {swiper.update()}}>
+              <SwiperSlide>
+                <ItemAction id={product.id}/>
+              </SwiperSlide>
+              <SwiperSlide>
+                <Item
+                  key={product.id}
+                  name={product.name}
+                  price={product.price}
+                />
+              </SwiperSlide>
+            </Swiper>
           );
         }
       });
@@ -47,7 +62,9 @@ export class ItemList extends Component {
       <Tabs selectedIndex={this.state.selectedTab} onSelect={this.onSelectTab}>
         <TabList style={scrollMenu}>{categoryList}</TabList>
         {products.map((product, index) => (
-          <TabPanel style={tabBody} key={index}>{product}</TabPanel>
+          <TabPanel style={tabBody} key={index}>
+            {product}
+          </TabPanel>
         ))}
       </Tabs>
     );
@@ -56,11 +73,11 @@ export class ItemList extends Component {
 
 const scrollMenu = {
   overflow: "auto",
-  whiteSpace: "nowrap"
-}
+  whiteSpace: "nowrap",
+};
 
 const tabBody = {
-  margin: "5px"
-}
+  margin: "5px",
+};
 
 export default ItemList;

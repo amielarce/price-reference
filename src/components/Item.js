@@ -12,7 +12,6 @@ export class Item extends Component {
 }
 
 const blockContainer = {
-  width: "95%",
   borderBottom: "1px solid gray",
   padding: "10px",  
 };

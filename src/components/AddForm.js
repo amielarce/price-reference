@@ -1,7 +1,7 @@
-import React from "react";
+import React, {Component} from "react";
 import { projectFirestore } from "../firebase/config";
 
-class AddForm extends React.Component {
+class AddForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
