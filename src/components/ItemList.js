@@ -31,7 +31,7 @@ export class ItemList extends Component {
           category === "All" ? product.category : category;
         if (updatedCategory === product.category && index > -1) {
           categoryItems.push(
-            <Swiper initialSlide={1} onSwiper={(swiper) => {swiper.update()}}>
+            <Swiper key={product.id} initialSlide={1} onSwiper={(swiper) => {swiper.update()}}>
               <SwiperSlide>
                 <ItemAction id={product.id}/>
               </SwiperSlide>

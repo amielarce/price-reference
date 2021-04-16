@@ -113,7 +113,7 @@ export class PriceReference extends Component {
           closeOnDocumentClick
           onClose={this.closeModal}
         >
-          <AddForm onModalClose={this.closeModal} />
+          <AddForm onModalClose={this.closeModal} id='' />
         </Popup>
       </div>
     );

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { projectFirestore } from "../firebase/config";
 
 class AddForm extends Component {
@@ -18,6 +18,26 @@ class AddForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.id !== "") {
+      // Fetch data from database
+      var docRef = projectFirestore.collection("products").doc(this.props.id);
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            this.setState({ ...doc.data() });
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+    }
+  }
+
   handleNameChange(event) {
     this.setState({ name: event.target.value });
   }
@@ -33,12 +53,29 @@ class AddForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // Add data to the firestore database
-    projectFirestore.collection("products").add({
-      name: this.state.name,
-      category: this.state.category,
-      price: this.state.price,
-    });
+    if (this.props.id !== "") {
+      // Update data on firestore
+      var docRef = projectFirestore.collection("products").doc(this.props.id);
+      docRef
+        .update({
+          name: this.state.name,
+          category: this.state.category,
+          price: this.state.price,
+        })
+        .then(() => {
+          console.log("Document successfully updated.");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    } else {
+      // Add data to the firestore database
+      projectFirestore.collection("products").add({
+        name: this.state.name,
+        category: this.state.category,
+        price: this.state.price,
+      });
+    }
 
     this.props.onModalClose();
   }
