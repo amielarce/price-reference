@@ -39,8 +39,6 @@ export class Item extends Component {
       .catch((error) => {
         console.error(error);
       });
-
-    this.closeDeleteModal();
   }
 
   closeEditModal() {
@@ -62,7 +60,7 @@ export class Item extends Component {
           closeOnDocumentClick
           onClose={this.closeEditModal}
         >
-          <AddForm onModalClose={this.closeEditModal} id={this.props.id} />
+          <AddForm onModalClose={this.closeEditModal} onItemUpdated={this.props.onItemUpdate} id={this.props.id} />
         </Popup>
         <button onClick={this.handleDelete}>Delete</button>
         <Popup

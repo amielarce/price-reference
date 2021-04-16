@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Item from "./Item";
-import ItemAction from "./ItemAction";
+import ItemSwiper from "./ItemSwiper";
 
 import "react-tabs/style/react-tabs.css";
 import "swiper/swiper-bundle.min.css";
@@ -31,18 +29,12 @@ export class ItemList extends Component {
           category === "All" ? product.category : category;
         if (updatedCategory === product.category && index > -1) {
           categoryItems.push(
-            <Swiper key={product.id} initialSlide={1} onSwiper={(swiper) => {swiper.update()}}>
-              <SwiperSlide>
-                <ItemAction id={product.id}/>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Item
-                  key={product.id}
-                  name={product.name}
-                  price={product.price}
-                />
-              </SwiperSlide>
-            </Swiper>
+            <ItemSwiper
+              key={product.id}
+              id={product.id}
+              name={product.name}
+              price={product.price}
+            />
           );
         }
       });

@@ -63,6 +63,8 @@ class AddForm extends Component {
           price: this.state.price,
         })
         .then(() => {
+          this.props.onModalClose();
+          this.props.onItemUpdated();
           console.log("Document successfully updated.");
         })
         .catch((error) => {
@@ -74,10 +76,14 @@ class AddForm extends Component {
         name: this.state.name,
         category: this.state.category,
         price: this.state.price,
+      }).then(() => {
+        this.props.onModalClose();
+        console.log("Document successfully added.");
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
       });
-    }
-
-    this.props.onModalClose();
+    }    
   }
 
   handleCancelClick(event) {
@@ -120,7 +126,7 @@ class AddForm extends Component {
             </label>
           </div>
           <div>
-            <input type="submit" value="Add" />
+            <input type="submit" value={this.props.id === '' ? 'Add' : 'Update'} />
             <button onClick={this.handleCancelClick}>Cancel</button>
           </div>
         </form>
