@@ -11,20 +11,27 @@ export class ItemSwiper extends Component {
     this.handleItemUpdate = this.handleItemUpdate.bind(this);
 
     this.state = {
-        swiper: null
-    }
+      swiper: null,
+    };
   }
 
   handleItemUpdate() {
-      this.state.swiper.slideNext(1000,true);
-      this.state.swiper.update();
+    this.state.swiper.slideNext(1000, true);
+    this.state.swiper.update();
   }
 
   render() {
     return (
-      <Swiper initialSlide={1} onSwiper={(swiper) => this.setState({swiper: swiper})}>
+      <Swiper
+        initialSlide={1}
+        onSwiper={(swiper) => this.setState({ swiper: swiper })}
+      >
         <SwiperSlide>
-          <ItemAction id={this.props.id} onItemUpdate={this.handleItemUpdate}/>
+          <ItemAction
+            id={this.props.id}
+            onItemUpdate={this.handleItemUpdate}
+            categories={this.props.categories}
+          />
         </SwiperSlide>
         <SwiperSlide>
           <Item

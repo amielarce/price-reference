@@ -60,7 +60,12 @@ export class Item extends Component {
           closeOnDocumentClick
           onClose={this.closeEditModal}
         >
-          <AddForm onModalClose={this.closeEditModal} onItemUpdated={this.props.onItemUpdate} id={this.props.id} />
+          <AddForm
+            onModalClose={this.closeEditModal}
+            onItemUpdated={this.props.onItemUpdate}
+            id={this.props.id}
+            categories={this.props.categories}
+          />
         </Popup>
         <button onClick={this.handleDelete}>Delete</button>
         <Popup

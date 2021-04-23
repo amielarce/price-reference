@@ -34,6 +34,7 @@ export class ItemList extends Component {
               id={product.id}
               name={product.name}
               price={product.price}
+              categories={this.props.categories}
             />
           );
         }
