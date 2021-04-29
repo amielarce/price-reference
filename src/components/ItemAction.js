@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Popup from "reactjs-popup";
 import { projectFirestore } from "../firebase/config";
-import AddForm from "./AddForm";
+import ModalForm from "./ModalForm";
 
 import "reactjs-popup/dist/index.css";
 
@@ -57,13 +57,18 @@ export class Item extends Component {
           open={this.state.isEditModalOpen}
           position="center center"
           modal
+          nested
           closeOnDocumentClick
+          contentStyle={contentStyle}
           onClose={this.closeEditModal}
         >
-          <AddForm
+          <ModalForm
             onModalClose={this.closeEditModal}
             onItemUpdated={this.props.onItemUpdate}
             id={this.props.id}
+            name={this.props.name}
+            category={this.props.category}
+            price={this.props.price}
             categories={this.props.categories}
           />
         </Popup>
@@ -73,6 +78,7 @@ export class Item extends Component {
           position="center center"
           modal
           closeOnDocumentClick
+          contentStyle={contentStyle}
           onClose={this.closeDeleteModal}
         >
           <div>Are you sure you want to delete this item?</div>
@@ -90,6 +96,11 @@ const blockContainer = {
   borderBottom: "1px solid gray",
   padding: "10px",
   backgroundColor: "gray",
+};
+
+const contentStyle = { 
+  borderRadius: "5px",
+  width: "75%"
 };
 
 export default Item;

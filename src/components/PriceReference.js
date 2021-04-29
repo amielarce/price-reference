@@ -6,7 +6,7 @@ import "react-tiny-fab/dist/styles.css";
 import { projectFirestore } from "../firebase/config";
 import SearchBar from "./SearchBar";
 import ItemList from "./ItemList";
-import AddForm from "./AddForm";
+import ModalForm from "./ModalForm";
 
 export class PriceReference extends Component {
   constructor(props) {
@@ -14,6 +14,7 @@ export class PriceReference extends Component {
     this.onSearchTextChange = this.onSearchTextChange.bind(this);
     this.onAddItem = this.onAddItem.bind(this);
     this.closeModal = this.closeModal.bind(this);
+
     this.state = {
       searchText: "",
       products: [],
@@ -35,31 +36,24 @@ export class PriceReference extends Component {
         snap.forEach((doc) => {
           data.push({ ...doc.data(), id: doc.id });
         });
+
+        // Sort data by name
+        data.sort((a, b) => {
+          var nameA = a.name.toUpperCase();
+          var nameB = b.name.toUpperCase();
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0;
+        });
+
         // Update state values
         this.setState({
           products: data,
           categories: this.getUniqueCategories(data),
-          unsub: unsubscribe,
         });
       });
-    // this.setState({
-    //   products: Data,
-    //   categories: this.getUniqueCategories(Data)
-    // })
-    // console.log(Data);
-    // Papa.parse(
-    //   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQFvcgfAORNuC6zivcdvnJJezWQkziCezMPRtzkFBKjZ6d2MtukYH6hOOdAffWDeFVm4mkh8m2K4naF/pub?gid=0&single=true&output=csv",
-    //   {
-    //     download: true,
-    //     header: true,
-    //     complete: (results) => {
-    //       this.setState({
-    //         products: results.data,
-    //         categories: this.getUniqueCategories(results.data)
-    //       });
-    //     },
-    //   }
-    // );
+
+    this.setState({ unsub: unsubscribe });
   }
 
   componentWillUnmount() {
@@ -110,10 +104,12 @@ export class PriceReference extends Component {
           open={this.state.isModalOpen}
           position="center center"
           modal
+          nested
           closeOnDocumentClick
+          contentStyle={contentStyle}
           onClose={this.closeModal}
         >
-          <AddForm
+          <ModalForm
             onModalClose={this.closeModal}
             id=""
             categories={this.state.categories}
@@ -125,7 +121,12 @@ export class PriceReference extends Component {
 }
 
 const fabStyle = {
-  backgroundColor: "tomato",
+  backgroundColor: "#f50057",
+};
+
+const contentStyle = {
+  borderRadius: "5px",
+  width: "75%",
 };
 
 export default PriceReference;

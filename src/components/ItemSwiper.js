@@ -29,6 +29,9 @@ export class ItemSwiper extends Component {
         <SwiperSlide>
           <ItemAction
             id={this.props.id}
+            name={this.props.name}
+            price={this.props.price}
+            category={this.props.category}
             onItemUpdate={this.handleItemUpdate}
             categories={this.props.categories}
           />
