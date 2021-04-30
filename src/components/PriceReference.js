@@ -79,7 +79,7 @@ export class PriceReference extends Component {
       categorySet.add(product.category);
     });
 
-    return Array.from(categorySet);
+    return Array.from(categorySet).sort();
   }
 
   render() {
@@ -122,6 +122,10 @@ export class PriceReference extends Component {
 
 const fabStyle = {
   backgroundColor: "#f50057",
+  margin: "0",
+  bottom: "24px",
+  right: "20px",
+  position: "fixed"
 };
 
 const contentStyle = {

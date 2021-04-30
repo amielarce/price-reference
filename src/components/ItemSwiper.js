@@ -24,9 +24,10 @@ export class ItemSwiper extends Component {
     return (
       <Swiper
         initialSlide={1}
+        style={swiperStyle}
         onSwiper={(swiper) => this.setState({ swiper: swiper })}
       >
-        <SwiperSlide>
+        <SwiperSlide style={slideStyle}>
           <ItemAction
             id={this.props.id}
             name={this.props.name}
@@ -47,5 +48,14 @@ export class ItemSwiper extends Component {
     );
   }
 }
+
+const swiperStyle = {
+  borderBottom: "1px solid gray",
+};
+
+const slideStyle = {
+  display: "flex",
+  alignItems: "center",
+};
 
 export default ItemSwiper;

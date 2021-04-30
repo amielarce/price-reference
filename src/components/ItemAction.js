@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Popup from "reactjs-popup";
+import { Button } from "@material-ui/core";
 import { projectFirestore } from "../firebase/config";
 import ModalForm from "./ModalForm";
+import ModalMessage from "./ModalMessage";
 
 import "reactjs-popup/dist/index.css";
 
@@ -34,7 +36,7 @@ export class Item extends Component {
       .doc(this.props.id)
       .delete()
       .then(() => {
-        console.log("Deleted");
+        // Do nothing
       })
       .catch((error) => {
         console.error(error);
@@ -52,14 +54,21 @@ export class Item extends Component {
   render() {
     return (
       <div style={blockContainer}>
-        <button onClick={this.handleEdit}>Edit</button>
+        <Button
+          onClick={this.handleEdit}
+          variant="contained"
+          color="primary"
+          style={buttonStyle}
+        >
+          Edit
+        </Button>
         <Popup
           open={this.state.isEditModalOpen}
           position="center center"
           modal
           nested
           closeOnDocumentClick
-          contentStyle={contentStyle}
+          contentStyle={modalFromStyle}
           onClose={this.closeEditModal}
         >
           <ModalForm
@@ -72,20 +81,26 @@ export class Item extends Component {
             categories={this.props.categories}
           />
         </Popup>
-        <button onClick={this.handleDelete}>Delete</button>
+        <Button
+          onClick={this.handleDelete}
+          variant="contained"
+          color="secondary"
+          style={buttonStyle}
+        >
+          Delete
+        </Button>
         <Popup
           open={this.state.isDeleteModalOpen}
           position="center center"
           modal
           closeOnDocumentClick
-          contentStyle={contentStyle}
+          contentStyle={modalMessageStyle}
           onClose={this.closeDeleteModal}
         >
-          <div>Are you sure you want to delete this item?</div>
-          <div>
-            <button onClick={this.closeDeleteModal}>Cancel</button>
-            <button onClick={this.handleDeleteConfirm}>Delete</button>
-          </div>
+          <ModalMessage
+            onCancel={this.closeDeleteModal}
+            onDelete={this.handleDeleteConfirm}
+          />
         </Popup>
       </div>
     );
@@ -93,14 +108,21 @@ export class Item extends Component {
 }
 
 const blockContainer = {
-  borderBottom: "1px solid gray",
-  padding: "10px",
-  backgroundColor: "gray",
+  padding: "1px"
 };
 
-const contentStyle = { 
+const modalFromStyle = {
   borderRadius: "5px",
-  width: "75%"
+  width: "75%",
+};
+
+const modalMessageStyle = {
+  borderRadius: "5px",
+  width: "75%",
+};
+
+const buttonStyle = {
+  margin: "5px 10px"
 };
 
 export default Item;

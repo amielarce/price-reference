@@ -38,7 +38,6 @@ class ModalForm extends Component {
     this.setState({ options });
 
     // Set initial values for states
-    console.log("Price property is " + this.props.price);
     if (this.props.name) this.setState({ name: this.props.name });
     if (this.props.category) this.setState({ category: this.props.category });
     if (this.props.price) this.setState({ price: this.props.price });
@@ -88,7 +87,6 @@ class ModalForm extends Component {
           this.setState({ status: "complete" });
           this.props.onModalClose();
           this.props.onItemUpdated();
-          console.log("Document successfully updated.");
         })
         .catch((error) => {
           this.setState({ status: "complete" });
@@ -106,7 +104,6 @@ class ModalForm extends Component {
         .then(() => {
           this.setState({ status: "complete" });
           this.props.onModalClose();
-          console.log("Document successfully added.");
         })
         .catch((error) => {
           this.setState({ status: "complete" });

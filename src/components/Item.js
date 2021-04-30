@@ -12,7 +12,6 @@ export class Item extends Component {
 }
 
 const blockContainer = {
-  borderBottom: "1px solid gray",
   padding: "10px",  
 };
 const nameStyle = {

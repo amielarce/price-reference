@@ -9,7 +9,7 @@ function Header() {
 }
 
 const headerStyle = {
-  background: "#6a6b6a",
+  background: "#3f51b5",
   color: "#fff",
   textAlign: "center",
   padding: "3px",

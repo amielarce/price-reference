@@ -42,7 +42,7 @@ export class ItemList extends Component {
       });
 
       if (categoryItems.length <= 0) {
-        categoryItems.push(<div>Item not found.</div>);
+        categoryItems.push(<div key={0}>Item not found.</div>);
       }
 
       products.push(<div>{categoryItems}</div>);

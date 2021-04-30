@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { TextField } from "@material-ui/core";
 
 export class SearchBar extends Component {
   constructor(props) {
@@ -7,23 +8,31 @@ export class SearchBar extends Component {
   }
 
   handleChange(e) {
-    this.props.onSearchTextChange(e.target.value);    
+    this.props.onSearchTextChange(e.target.value);
   }
 
   render() {
     const searchText = this.props.searchText;
     return (
-      <div style={{width:"100%"}}>
-        <input
-          type="text"
-          value={searchText}
-          style={{width: "98%", padding: "5px 1px", margin: "1px 0px"}}
+      <div style={{ width: "100%" }}>
+        <TextField
+          style={inputStyle}
+          type="search"
+          variant="outlined"
+          size="small"
           placeholder="Search..."
-          onChange = {this.handleChange}
+          fullWidth
+          value={searchText}
+          onChange={this.handleChange}
         />
       </div>
     );
   }
 }
+
+const inputStyle = {
+  margin: "3px",
+  width: "98%"
+};
 
 export default SearchBar;
