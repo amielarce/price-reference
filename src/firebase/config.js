@@ -1,15 +1,14 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-
 var firebaseConfig = {
-  apiKey: "AIzaSyDoqAJ-d-UERIc-LfguqDN8UItS4I3LtRU",
-  authDomain: "price-ref.firebaseapp.com",
-  projectId: "price-ref",
-  storageBucket: "price-ref.appspot.com",
-  messagingSenderId: "546374940976",
-  appId: "1:546374940976:web:7689e9132a384b1f84f0f5",
-  measurementId: "G-1D5MMTRLHV",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
