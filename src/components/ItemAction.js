@@ -1,39 +1,27 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { Button } from "@material-ui/core";
 import { projectFirestore } from "../firebase/config";
 import ModalForm from "./ModalForm";
 import ModalMessage from "./ModalMessage";
 
-import "reactjs-popup/dist/index.css";
+const ItemAction = (props) => {
+  // Initialize states
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-export class Item extends Component {
-  constructor(props) {
-    super(props);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.closeEditModal = this.closeEditModal.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.closeDeleteModal = this.closeDeleteModal.bind(this);
-    this.handleDeleteConfirm = this.handleDeleteConfirm.bind(this);
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
-    this.state = {
-      isEditModalOpen: false,
-      isDeleteModalOpen: false,
-    };
-  }
+  const handleDelete = (event) => {
+    setIsDeleteModalOpen(true);
+  };
 
-  closeDeleteModal() {
-    this.setState({ isDeleteModalOpen: false });
-  }
-
-  handleDelete(event) {
-    this.setState({ isDeleteModalOpen: true });
-  }
-
-  handleDeleteConfirm(event) {
+  const handleDeleteConfirm = (event) => {
     projectFirestore
       .collection("products")
-      .doc(this.props.id)
+      .doc(props.id)
       .delete()
       .then(() => {
         // Do nothing
@@ -41,74 +29,72 @@ export class Item extends Component {
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
-  closeEditModal() {
-    this.setState({ isEditModalOpen: false });
-  }
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
 
-  handleEdit(event) {
-    this.setState({ isEditModalOpen: true });
-  }
+  const handleEdit = (event) => {
+    setIsEditModalOpen(true);
+  };
 
-  render() {
-    return (
-      <div style={blockContainer}>
-        <Button
-          onClick={this.handleEdit}
-          variant="contained"
-          color="primary"
-          style={buttonStyle}
-        >
-          Edit
-        </Button>
-        <Popup
-          open={this.state.isEditModalOpen}
-          position="center center"
-          modal
-          nested
-          closeOnDocumentClick
-          contentStyle={modalFromStyle}
-          onClose={this.closeEditModal}
-        >
-          <ModalForm
-            onModalClose={this.closeEditModal}
-            onItemUpdated={this.props.onItemUpdate}
-            id={this.props.id}
-            name={this.props.name}
-            category={this.props.category}
-            price={this.props.price}
-            categories={this.props.categories}
-          />
-        </Popup>
-        <Button
-          onClick={this.handleDelete}
-          variant="contained"
-          color="secondary"
-          style={buttonStyle}
-        >
-          Delete
-        </Button>
-        <Popup
-          open={this.state.isDeleteModalOpen}
-          position="center center"
-          modal
-          closeOnDocumentClick
-          contentStyle={modalMessageStyle}
-          onClose={this.closeDeleteModal}
-        >
-          <ModalMessage
-            onCancel={this.closeDeleteModal}
-            onDelete={this.handleDeleteConfirm}
-          />
-        </Popup>
-      </div>
-    );
-  }
-}
+  return (
+    <div style={blockContainer}>
+      <Button
+        onClick={handleEdit}
+        variant="contained"
+        color="primary"
+        style={buttonStyle}
+      >
+        Edit
+      </Button>
+      <Popup
+        open={isEditModalOpen}
+        position="center center"
+        modal
+        nested
+        closeOnDocumentClick
+        contentStyle={modalFromStyle}
+        onClose={closeEditModal}
+      >
+        <ModalForm
+          onModalClose={closeEditModal}
+          onItemUpdated={props.onItemUpdate}
+          id={props.id}
+          name={props.name}
+          category={props.category}
+          price={props.price}
+          categories={props.categories}
+        />
+      </Popup>
+      <Button
+        onClick={handleDelete}
+        variant="contained"
+        color="secondary"
+        style={buttonStyle}
+      >
+        Delete
+      </Button>
+      <Popup
+        open={isDeleteModalOpen}
+        position="center center"
+        modal
+        closeOnDocumentClick
+        contentStyle={modalMessageStyle}
+        onClose={closeDeleteModal}
+      >
+        <ModalMessage
+          onCancel={closeDeleteModal}
+          onDelete={handleDeleteConfirm}
+        />
+      </Popup>
+    </div>
+  );
+};
 
 const blockContainer = {
-  padding: "1px"
+  padding: "1px",
 };
 
 const modalFromStyle = {
@@ -122,7 +108,7 @@ const modalMessageStyle = {
 };
 
 const buttonStyle = {
-  margin: "5px 10px"
+  margin: "5px 10px",
 };
 
-export default Item;
+export default ItemAction;

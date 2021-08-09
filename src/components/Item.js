@@ -1,18 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class Item extends Component {
-  render() {
-    return (
-      <div style={blockContainer}>
-        <div style={nameStyle}>{this.props.name}</div>
-        <div style={priceStyle}>{this.props.price}</div>
-      </div>
-    );
-  }
-}
+const Item = ({ name, price }) => {
+  return (
+    <div style={blockContainer}>
+      <div style={nameStyle}>{name}</div>
+      <div style={priceStyle}>{price}</div>
+    </div>
+  );
+};
 
 const blockContainer = {
-  padding: "10px",  
+  padding: "10px",
 };
 const nameStyle = {
   display: "inline-block",

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Fab } from "react-tiny-fab";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -8,23 +8,15 @@ import SearchBar from "./SearchBar";
 import ItemList from "./ItemList";
 import ModalForm from "./ModalForm";
 
-export class PriceReference extends Component {
-  constructor(props) {
-    super(props);
-    this.onSearchTextChange = this.onSearchTextChange.bind(this);
-    this.onAddItem = this.onAddItem.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+const PriceReference = () => {
+  // Initialize states
+  const [searchText, setSearchText] = useState("");
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    this.state = {
-      searchText: "",
-      products: [],
-      categories: [],
-      unsub: null,
-      isModalOpen: false,
-    };
-  }
-
-  componentDidMount() {
+  // Subscribe to firestore using an effect
+  useEffect(() => {
     // Get data from firestore snapshot
     var data = [];
     const unsubscribe = projectFirestore
@@ -47,85 +39,77 @@ export class PriceReference extends Component {
         });
 
         // Update state values
-        this.setState({
-          products: data,
-          categories: this.getUniqueCategories(data),
-        });
+        setProducts(data);
+        setCategories(getUniqueCategories(data));
       });
 
-    this.setState({ unsub: unsubscribe });
-  }
+    return unsubscribe;
+  }, []);
 
-  componentWillUnmount() {
-    this.state.unsub();
-  }
+  // Update state on search text change
+  const onSearchTextChange = (searchText) => {
+    setSearchText(searchText);
+  };
 
-  onSearchTextChange(searchText) {
-    this.setState({ searchText });
-  }
+  // Update modal open state when adding a new item
+  const onAddItem = () => {
+    setIsModalOpen(true);
+  };
 
-  onAddItem() {
-    this.setState({ isModalOpen: true });
-  }
+  // Update modal open state when closing the modal window
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-  closeModal() {
-    this.setState({ isModalOpen: false });
-  }
-
-  getUniqueCategories(product) {
+  // Obtain unique categories from the products data set
+  const getUniqueCategories = (products) => {
     const categorySet = new Set();
     categorySet.add("All"); // Initial category
-    product.forEach((product) => {
+    products.forEach((product) => {
       categorySet.add(product.category);
     });
 
     return Array.from(categorySet).sort();
-  }
+  };
 
-  render() {
-    return (
-      <div style={{ width: "100%" }}>
-        <SearchBar
-          searchText={this.state.searchText}
-          onSearchTextChange={this.onSearchTextChange}
-        />
-        <ItemList
-          searchItem={this.state.searchText}
-          products={this.state.products}
-          categories={this.state.categories}
-        />
-        <Fab
-          mainButtonStyles={fabStyle}
-          icon={<div>+</div>}
-          onClick={this.onAddItem}
-          event="click"
-        />
-        <Popup
-          open={this.state.isModalOpen}
-          position="center center"
-          modal
-          nested
-          closeOnDocumentClick
-          contentStyle={contentStyle}
-          onClose={this.closeModal}
-        >
-          <ModalForm
-            onModalClose={this.closeModal}
-            id=""
-            categories={this.state.categories}
-          />
-        </Popup>
-      </div>
-    );
-  }
-}
+  return (
+    <div style={{ width: "100%" }}>
+      <SearchBar
+        searchText={searchText}
+        onSearchTextChange={onSearchTextChange}
+      />
+      <ItemList
+        searchItem={searchText}
+        products={products}
+        categories={categories}
+      />
+      <Fab
+        mainButtonStyles={fabStyle}
+        icon={<div>+</div>}
+        onClick={onAddItem}
+        event="click"
+      />
+      <Popup
+        open={isModalOpen}
+        position="center center"
+        modal
+        nested
+        closeOnDocumentClick
+        contentStyle={contentStyle}
+        onClose={closeModal}
+      >
+        <ModalForm onModalClose={closeModal} id="" categories={categories} />
+      </Popup>
+    </div>
+  );
+};
 
 const fabStyle = {
   backgroundColor: "#f50057",
   margin: "0",
   bottom: "24px",
   right: "20px",
-  position: "fixed"
+  position: "fixed",
 };
 
 const contentStyle = {

@@ -1,63 +1,57 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Grid, Button, CircularProgress } from "@material-ui/core";
 
-class ModalMessage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { status: "idle" };
+const ModalMessage = ({ onDelete, onCancel }) => {
+  // Initialize states
+  const [status, setStatus] = useState("idle");
 
-    this.handleDelete = this.handleDelete.bind(this);
-  }
+  // Update state on Delete button click
+  const handleDelete = () => {
+    setStatus("processing");
+    onDelete();
+  };
 
-  handleDelete() {
-    this.setState({ status: "processing" });
-    this.props.onDelete();
-  }
-
-  render() {
-    return (
-      <Grid container style={rootStyle}>
-        <Grid item xs={12} style={headerStyle}>
-          Delete Confirmation
-        </Grid>
-        {this.state.status === "processing" && (
-          <Grid item xs={12}>
-            <CircularProgress />
-          </Grid>
-        )}
-        <Grid items xs={12} style={messageStyle}>
-          {this.state.status === "idle" &&
-            "Are you sure you want to delete this item?"}
-          {this.state.status === "processing" && "Deleting item. Please wait."}
-        </Grid>
-        {this.state.status === "idle" && (
-          <Grid container>
-            <Grid item xs={6}>
-              <Button
-                style={buttonStyle}
-                variant="contained"
-                color="primary"
-                onClick={this.handleDelete}
-              >
-                Delete
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                style={buttonStyle}
-                variant="contained"
-                color="secondary"
-                onClick={this.props.onCancel}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
-        )}
+  return (
+    <Grid container style={rootStyle}>
+      <Grid item xs={12} style={headerStyle}>
+        Delete Confirmation
       </Grid>
-    );
-  }
-}
+      {status === "processing" && (
+        <Grid item xs={12}>
+          <CircularProgress />
+        </Grid>
+      )}
+      <Grid item xs={12} style={messageStyle}>
+        {status === "idle" && "Are you sure you want to delete this item?"}
+        {status === "processing" && "Deleting item. Please wait."}
+      </Grid>
+      {status === "idle" && (
+        <Grid container>
+          <Grid item xs={6}>
+            <Button
+              style={buttonStyle}
+              variant="contained"
+              color="primary"
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              style={buttonStyle}
+              variant="contained"
+              color="secondary"
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
+          </Grid>
+        </Grid>
+      )}
+    </Grid>
+  );
+};
 
 const headerStyle = {
   textAlign: "center",
