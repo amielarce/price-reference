@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import ItemSwiper from "./ItemSwiper";
 
 import "react-tabs/style/react-tabs.css";
 import "swiper/swiper-bundle.min.css";
 
-const ItemList = (props) => {
+const ItemList = ({searchItem}) => {
   // Initialize states
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -14,25 +15,24 @@ const ItemList = (props) => {
     setSelectedTab(index);
   };
 
-  // Render
+  // Obtain product and category data from store
+  const productData = useSelector((state) => state.product.products);
+  const categoryData = useSelector((state) => state.category.categories);
+
   const products = [];
-  props.categories.forEach((category) => {
+  categoryData.forEach((category) => {
     const categoryItems = [];
 
-    props.products.forEach((product) => {
+    productData.forEach((product) => {
       const index = product.name
         .toLowerCase()
-        .indexOf(props.searchItem.toLowerCase());
+        .indexOf(searchItem.toLowerCase());
       const updatedCategory = category === "All" ? product.category : category;
       if (updatedCategory === product.category && index > -1) {
         categoryItems.push(
           <ItemSwiper
             key={product.id}
             id={product.id}
-            name={product.name}
-            price={product.price}
-            category={product.category}
-            categories={props.categories}
           />
         );
       }
@@ -45,7 +45,7 @@ const ItemList = (props) => {
     products.push(<div>{categoryItems}</div>);
   });
 
-  const categoryList = props.categories.map((category) => (
+  const categoryList = categoryData.map((category) => (
     <Tab key={category}>{category}</Tab>
   ));
 

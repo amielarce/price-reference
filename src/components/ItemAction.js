@@ -5,7 +5,7 @@ import { projectFirestore } from "../firebase/config";
 import ModalForm from "./ModalForm";
 import ModalMessage from "./ModalMessage";
 
-const ItemAction = (props) => {
+const ItemAction = ({id, onItemUpdate}) => {
   // Initialize states
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -21,7 +21,7 @@ const ItemAction = (props) => {
   const handleDeleteConfirm = (event) => {
     projectFirestore
       .collection("products")
-      .doc(props.id)
+      .doc(id)
       .delete()
       .then(() => {
         // Do nothing
@@ -60,12 +60,8 @@ const ItemAction = (props) => {
       >
         <ModalForm
           onModalClose={closeEditModal}
-          onItemUpdated={props.onItemUpdate}
-          id={props.id}
-          name={props.name}
-          category={props.category}
-          price={props.price}
-          categories={props.categories}
+          onItemUpdated={onItemUpdate}
+          id = {id}
         />
       </Popup>
       <Button

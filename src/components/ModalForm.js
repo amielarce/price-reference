@@ -1,40 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { TextField, Grid, Button } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { projectFirestore } from "../firebase/config";
 
 import Progress from "./Progress";
 
-const ModalForm = (props) => {
+const ModalForm = ({id, onModalClose, onItemUpdated}) => {
+  // Obtain store data
+  const product = useSelector((state) => state.product.products.find((product) => product.id === id));
+  const options = useSelector((state) => state.category.categories.filter((category) => category !== 'All'));
+  const header = product ? "Update Entry" : "Add New Entry";
+
   // Initialize states
-  const [header, setHeader] = useState("");
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [options, setOptions] = useState([]);
+  const [name, setName] = useState(product ? product.name : "");
+  const [category, setCategory] = useState(product ? product.category : "");
+  const [price, setPrice] = useState(product ? product.price : "");  
   const [status, setStatus] = useState("idle");
-
-  // Use effect to set initial display
-  useEffect(() => {
-    // Create selector options
-    var options = [];
-    props.categories.forEach((category) => {
-      if (category !== "All") {
-        options.push(category);
-      }
-    });
-    setOptions(options);
-
-    // Set initial values for states
-    props.name && setName(props.name);
-    props.category && setCategory(props.category);
-    props.price && setPrice(props.price);
-    if (props.id !== "") {
-      setHeader("Update Entry");
-    } else {
-      setHeader("Add New Entry");
-    }
-  }, [props]);
 
   // Update state on name change
   const handleNameChange = (event) => {
@@ -61,9 +43,9 @@ const ModalForm = (props) => {
     event.preventDefault();
 
     setStatus("processing");
-    if (props.id !== "") {
+    if (product) {
       // Update data on firestore
-      var docRef = projectFirestore.collection("products").doc(props.id);
+      var docRef = projectFirestore.collection("products").doc(product.id);
       docRef
         .update({
           name,
@@ -72,8 +54,8 @@ const ModalForm = (props) => {
         })
         .then(() => {
           setStatus("complete");
-          props.onModalClose();
-          props.onItemUpdated();
+          onModalClose();
+          onItemUpdated();
         })
         .catch((error) => {
           setStatus("complete");
@@ -90,7 +72,7 @@ const ModalForm = (props) => {
         })
         .then(() => {
           setStatus("complete");
-          props.onModalClose();
+          onModalClose();
         })
         .catch((error) => {
           setStatus("complete");
@@ -100,7 +82,7 @@ const ModalForm = (props) => {
   };
 
   const handleCancelClick = (event) => {
-    props.onModalClose();
+    onModalClose();
   };
 
   const getDefaultCategory = (value) => {
@@ -174,7 +156,7 @@ const ModalForm = (props) => {
                   color="primary"
                   onClick={handleProcessClick}
                 >
-                  {props.id === "" ? "Add" : "Update"}
+                  {product === "" ? "Add" : "Update"}
                 </Button>
               </Grid>
               <Grid item xs>

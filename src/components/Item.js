@@ -1,10 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const Item = ({ name, price }) => {
+const Item = ({ id }) => {
+  const product = useSelector((state) =>
+    state.product.products.find((product) => product.id === id)
+  );
+
   return (
     <div style={blockContainer}>
-      <div style={nameStyle}>{name}</div>
-      <div style={priceStyle}>{price}</div>
+      <div style={nameStyle}>{product.name}</div>
+      <div style={priceStyle}>{product.price}</div>
     </div>
   );
 };

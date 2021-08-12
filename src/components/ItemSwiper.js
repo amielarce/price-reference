@@ -5,7 +5,7 @@ import ItemAction from "./ItemAction";
 
 import "swiper/swiper-bundle.min.css";
 
-export const ItemSwiper = (props) => {
+export const ItemSwiper = ({id}) => {
   // Initialize states
   const [swiper, setSwiper] = useState(null);
 
@@ -23,16 +23,12 @@ export const ItemSwiper = (props) => {
     >
       <SwiperSlide style={slideStyle}>
         <ItemAction
-          id={props.id}
-          name={props.name}
-          price={props.price}
-          category={props.category}
+          id = {id}
           onItemUpdate={handleItemUpdate}
-          categories={props.categories}
         />
       </SwiperSlide>
       <SwiperSlide>
-        <Item key={props.id} name={props.name} price={props.price} />
+        <Item key={id} id = {id} />
       </SwiperSlide>
     </Swiper>
   );

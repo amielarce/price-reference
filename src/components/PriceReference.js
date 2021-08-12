@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch  } from "react-redux";
+import { updateProducts } from "../state/reducers/productSlice";
+import { updateCategories } from "../state/reducers/categorySlice";
 import { Fab } from "react-tiny-fab";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -11,9 +14,10 @@ import ModalForm from "./ModalForm";
 const PriceReference = () => {
   // Initialize states
   const [searchText, setSearchText] = useState("");
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Dispatch data to update reducer
+  const dispatch = useDispatch();
 
   // Subscribe to firestore using an effect
   useEffect(() => {
@@ -39,12 +43,12 @@ const PriceReference = () => {
         });
 
         // Update state values
-        setProducts(data);
-        setCategories(getUniqueCategories(data));
+        dispatch(updateProducts(data));
+        dispatch(updateCategories(getUniqueCategories(data)));
       });
 
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
 
   // Update state on search text change
   const onSearchTextChange = (searchText) => {
@@ -80,8 +84,6 @@ const PriceReference = () => {
       />
       <ItemList
         searchItem={searchText}
-        products={products}
-        categories={categories}
       />
       <Fab
         mainButtonStyles={fabStyle}
@@ -98,7 +100,7 @@ const PriceReference = () => {
         contentStyle={contentStyle}
         onClose={closeModal}
       >
-        <ModalForm onModalClose={closeModal} id="" categories={categories} />
+        <ModalForm onModalClose={closeModal} id="" />
       </Popup>
     </div>
   );
