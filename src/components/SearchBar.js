@@ -1,10 +1,15 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { TextField } from "@material-ui/core";
+import { setSearchText } from "../state/reducers/searchSlice";
 
-const SearchBar = ({ searchText, onSearchTextChange }) => {
+const SearchBar = () => {
+
+  const dispatch = useDispatch();
+
   // Handle search text change
   const handleChange = (e) => {
-    onSearchTextChange(e.target.value);
+    dispatch(setSearchText(e.target.value));
   };
 
   return (
@@ -16,7 +21,6 @@ const SearchBar = ({ searchText, onSearchTextChange }) => {
         size="small"
         placeholder="Search..."
         fullWidth
-        value={searchText}
         onChange={handleChange}
       />
     </div>

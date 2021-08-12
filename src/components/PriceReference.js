@@ -13,7 +13,6 @@ import ModalForm from "./ModalForm";
 
 const PriceReference = () => {
   // Initialize states
-  const [searchText, setSearchText] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Dispatch data to update reducer
@@ -50,11 +49,6 @@ const PriceReference = () => {
     return unsubscribe;
   }, [dispatch]);
 
-  // Update state on search text change
-  const onSearchTextChange = (searchText) => {
-    setSearchText(searchText);
-  };
-
   // Update modal open state when adding a new item
   const onAddItem = () => {
     setIsModalOpen(true);
@@ -78,13 +72,8 @@ const PriceReference = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <SearchBar
-        searchText={searchText}
-        onSearchTextChange={onSearchTextChange}
-      />
-      <ItemList
-        searchItem={searchText}
-      />
+      <SearchBar />
+      <ItemList />
       <Fab
         mainButtonStyles={fabStyle}
         icon={<div>+</div>}

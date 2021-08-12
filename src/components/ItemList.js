@@ -18,6 +18,11 @@ const ItemList = ({searchItem}) => {
   // Obtain product and category data from store
   const productData = useSelector((state) => state.product.products);
   const categoryData = useSelector((state) => state.category.categories);
+  const searchText = useSelector(state => state.search.text);
+
+  const categoryList = categoryData.map((category) => (
+    <Tab key={category}>{category}</Tab>
+  ));
 
   const products = [];
   categoryData.forEach((category) => {
@@ -26,7 +31,7 @@ const ItemList = ({searchItem}) => {
     productData.forEach((product) => {
       const index = product.name
         .toLowerCase()
-        .indexOf(searchItem.toLowerCase());
+        .indexOf(searchText.toLowerCase());
       const updatedCategory = category === "All" ? product.category : category;
       if (updatedCategory === product.category && index > -1) {
         categoryItems.push(
@@ -45,9 +50,7 @@ const ItemList = ({searchItem}) => {
     products.push(<div>{categoryItems}</div>);
   });
 
-  const categoryList = categoryData.map((category) => (
-    <Tab key={category}>{category}</Tab>
-  ));
+  
 
   return (
     <Tabs selectedIndex={selectedTab} onSelect={onSelectTab}>
