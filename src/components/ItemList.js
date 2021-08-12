@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import ItemSwiper from "./ItemSwiper";
@@ -6,9 +6,11 @@ import ItemSwiper from "./ItemSwiper";
 import "react-tabs/style/react-tabs.css";
 import "swiper/swiper-bundle.min.css";
 
-const ItemList = ({searchItem}) => {
+const ItemList = () => {
   // Initialize states
   const [selectedTab, setSelectedTab] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
 
   // Update state on tab select
   const onSelectTab = (index, lastIndex) => {
@@ -18,39 +20,41 @@ const ItemList = ({searchItem}) => {
   // Obtain product and category data from store
   const productData = useSelector((state) => state.product.products);
   const categoryData = useSelector((state) => state.category.categories);
-  const searchText = useSelector(state => state.search.text);
+  const searchText = useSelector((state) => state.search.text);
 
-  const categoryList = categoryData.map((category) => (
-    <Tab key={category}>{category}</Tab>
-  ));
+  useEffect(() => {
+    const products = [];
+    categoryData.forEach((category) => {
+      const categoryItems = [];
 
-  const products = [];
-  categoryData.forEach((category) => {
-    const categoryItems = [];
+      productData.forEach((product) => {
+        var index = 0;
+        if (searchText !== "") {
+          index = product.name.toLowerCase().indexOf(searchText.toLowerCase());
+        }
+        const updatedCategory =
+          category === "All" ? product.category : category;
+        if (updatedCategory === product.category && index > -1) {
+          categoryItems.push(<ItemSwiper key={product.id} id={product.id} />);
+        }
+      });
 
-    productData.forEach((product) => {
-      const index = product.name
-        .toLowerCase()
-        .indexOf(searchText.toLowerCase());
-      const updatedCategory = category === "All" ? product.category : category;
-      if (updatedCategory === product.category && index > -1) {
-        categoryItems.push(
-          <ItemSwiper
-            key={product.id}
-            id={product.id}
-          />
-        );
+      if (categoryItems.length <= 0) {
+        categoryItems.push(<div key={0}>Item not found.</div>);
       }
+
+      products.push(<div>{categoryItems}</div>);
     });
+    setProducts(products);
 
-    if (categoryItems.length <= 0) {
-      categoryItems.push(<div key={0}>Item not found.</div>);
+    // Create tabs once tab panel data is set
+    if (productData.length > 0) {
+      const categoryList = categoryData.map((category) => (
+        <Tab key={category}>{category}</Tab>
+      ));
+      setCategoryList(categoryList);
     }
-
-    products.push(<div>{categoryItems}</div>);
-  });
-
-  
+  }, [productData, categoryData, searchText]);
 
   return (
     <Tabs selectedIndex={selectedTab} onSelect={onSelectTab}>
