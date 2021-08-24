@@ -106,6 +106,7 @@ const fabStyle = {
 const contentStyle = {
   borderRadius: "5px",
   width: "75%",
+  maxWidth: "500px",
 };
 
 export default PriceReference;

@@ -96,11 +96,13 @@ const blockContainer = {
 const modalFromStyle = {
   borderRadius: "5px",
   width: "75%",
+  maxWidth: "500px",
 };
 
 const modalMessageStyle = {
   borderRadius: "5px",
   width: "75%",
+  maxWidth: "500px",
 };
 
 const buttonStyle = {
